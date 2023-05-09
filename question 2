@@ -1,0 +1,753 @@
+
+
+
+
+
+Creating tables  
+
+ 
+
+ 
+
+Create table employee 
+
+( 
+
+Fname varchar(30) not null, 
+
+Minit varchar(30) not null, 
+
+Lname varchar(30) not null, 
+
+Ssn char(10) not null, 
+
+Bdate date not null, 
+
+Address varchar(100) not null, 
+
+Sex char(1) not null, 
+
+Salary decimal(10,2), 
+
+Superssn char(10) , 
+
+Dno int , 
+
+Primary key(ssn) 
+
+) 
+
+; 
+
+ 
+
+Create table department  
+
+( 
+
+Dname varchar(30) not null, 
+
+Dnumber int not null, 
+
+Mgrssn char(10), 
+
+Mgrstartdate date, 
+
+Primary key(dnumber) 
+
+) 
+
+; 
+
+ 
+
+ 
+
+Create table dept_locations 
+
+( 
+
+Dnumber int not null, 
+
+Dlocation varchar(100) not null, 
+
+Primary key(dnumber ,dlocation) 
+
+) 
+
+; 
+
+ 
+
+Create table project  
+
+( 
+
+Pname varchar(30) not null, 
+
+Pnumber int not null , 
+
+Plocation varchar(100), 
+
+Dnum int , 
+
+Primary key(pnumber) 
+
+) 
+
+; 
+
+ 
+
+Create table works_on 
+
+( 
+
+Essn char(10) not null, 
+
+Pno int  not null, 
+
+Hours int , 
+
+Primary key(essn,pno) 
+
+) 
+
+; 
+
+ 
+
+Create table dependent  
+
+( 
+
+Essn char(10) not null , 
+
+Dependent_name varchar(30), 
+
+Sex char(1) not null, 
+
+Bdate date not null , 
+
+Relationship varchar(10), 
+
+Primary key(essn,dependent_name) 
+
+) 
+
+; 
+
+ 
+
+Alter table employee  
+
+Add foreign key(superssn) 
+
+References employee(ssn); 
+
+ 
+
+Alter table employee  
+
+Add foreign key(dno) 
+
+References department(dnumber); 
+
+ 
+
+Alter table department  
+
+Add foreign key(mgrssn) 
+
+References employee(ssn); 
+
+ 
+
+Alter table dept_locations 
+
+Add foreign key(dnumber) 
+
+References department(dnumber); 
+
+ 
+
+Alter table project 
+
+Add foreign key(dnum) 
+
+References department(dnumber); 
+
+ 
+
+Alter table works_on 
+
+Add foreign key(essn) 
+
+References employee(ssn); 
+
+ 
+
+Alter table works_on 
+
+Add foreign key(pno) 
+
+References project(pnumber); 
+
+ 
+
+Alter table dependent  
+
+Add foreign key(essn) 
+
+References employee(ssn);
+
+
+
+
+inserting data 
+
+
+INSERT INTO department (Dname, Dnumber, Mgrssn, Mgrstartdate) 
+
+VALUES  
+
+    ('Sales', 1, null , '2000-01-01'), 
+
+    ('Marketing', 2, null , '2005-02-02'), 
+
+    ('Engineering', 3, null , '2010-03-03'); 
+
+ 
+
+INSERT INTO dept_locations (Dnumber, Dlocation) 
+
+VALUES  
+
+    (1, 'New York'), 
+
+    (2, 'Chicago'), 
+
+    (3, 'San Francisco'); 
+
+ 
+
+INSERT INTO project (Pname, Pnumber, Plocation, Dnum) 
+
+VALUES  
+
+    ('Project A', 1, 'New York', 1), 
+
+    ('Project B', 2, 'Chicago', 2), 
+
+    ('Project C', 3, 'San Francisco', 3), 
+
+    ('Project D', 4, 'New York', 1), 
+
+    ('Project E', 5, 'Chicago', 2); 
+
+ 
+
+INSERT INTO employee (Fname, Minit, Lname, Ssn, Bdate, Address, Sex, Salary, Superssn, Dno) 
+
+VALUES  
+
+    ('John', 'D', 'Doe', '123456789', '1990-01-01', '123 Main St', 'M', 50000.00, NULL, 1), 
+
+    ('Jane', 'L', 'Smith', '234567890', '1995-02-02', '456 Elm St', 'F', 60000.00, '123456789', 2), 
+
+    ('Bob', 'A', 'Johnson', '345678901', '2000-03-03', '789 Oak St', 'M', 70000.00, '123456789', 2), 
+
+    ('Mary', 'K', 'Jones', '456789012', '2005-04-04', '1010 Pine St', 'F', 80000.00, '234567890', 3), 
+
+    ('Tom', 'B', 'Brown', '567890123', '2010-05-05', '1212 Cedar St', 'M', 90000.00, '234567890', 3), 
+
+    ('Samantha', 'E', 'Lee', '678901234', '2015-06-06', '1414 Maple St', 'F', 100000.00, '345678901', 3), 
+
+    ('David', 'F', 'Wilson', '789012345', '1985-07-07', '1616 Birch St', 'M', 110000.00, NULL, 1), 
+
+    ('Jennifer', 'G', 'Davis', '890123456', '1980-08-08', '1818 Walnut St', 'F', 120000.00, '789012345', 1), 
+
+    ('Michael', 'H', 'Taylor', '901234567', '1975-09-09', '2020 Spruce St', 'M', 130000.00, '789012345', 1), 
+
+    ('Laura', 'I', 'Clark', '012345678', '1970-10-10', '2222 Chestnut St', 'F', 140000.00, '789012345', 1); 
+
+ 
+
+update department  
+
+set mgrssn='789012345' 
+
+where dnumber=1; 
+
+  
+
+update department  
+
+set mgrssn='123456789' 
+
+where dnumber=2; 
+
+  
+
+update department  
+
+set mgrssn='234567890' 
+
+where dnumber=3; 
+
+ 
+
+INSERT INTO works_on (Essn, Pno, Hours) 
+
+VALUES  
+
+('123456789', 1, 10), 
+
+('234567890', 1, 16), 
+
+('123456789', 2, 12), 
+
+('345678901', 3, 22), 
+
+('345678901', 4, 23), 
+
+('456789012', 5, 10), 
+
+('123456789', 3, 11), 
+
+('567890123', 4, 12), 
+
+('678901234', 1, 19), 
+
+('567890123', 1, 23), 
+
+('678901234', 5, 24), 
+
+('678901234', 3, 9), 
+
+('890123456', 2, 8), 
+
+('890123456', 3, 7), 
+
+('789012345', 4, 12), 
+
+('901234567', 1, 22), 
+
+('901234567', 5, 17), 
+
+('012345678', 1, 19), 
+
+('012345678', 3, 18), 
+
+('012345678', 5, 22); 
+
+ 
+
+INSERT INTO dependent (Essn, Dependent_name, Sex, Bdate, Relationship) 
+
+VALUES 
+
+('123456789', 'Emily', 'f', '2010-05-15', 'daughter'), 
+
+('234567890', 'Jacob', 'M', '2009-04-15', 'Son'), 
+
+('345678901', 'Isabella', 'f', '2011-06-15', 'daughter'), 
+
+('456789012', 'Ethan', 'M', '2008-06-15', 'Son'), 
+
+('567890123', 'Mia', 'f', '2012-01-15', 'daughter'), 
+
+('678901234', 'William', 'M', '2006-07-15', 'Son'), 
+
+('789012345', 'Sophia', 'f', '2013-09-15', 'daughter'), 
+
+('890123456', 'Michael', 'M', '2004-012-15', 'Son'), 
+
+('901234567', 'Harper', 'f', '2015-11-15', 'daughter'), 
+
+('012345678', 'Alexander', 'M', '2009-06-15', 'Son');
+
+
+
+
+queries 
+
+--1)  Display all the details of all employees working in the company.
+
+select * from employee; 
+
+ 
+
+--2) Display ssn, lname, fname, address of employees who work in
+department no 7.
+
+select ssn, lname, fname, address  
+
+from employee  
+
+where dno=7; 
+
+ 
+
+--3)Retrieve the birthdate and address of the employee whose name
+is 'Franklin T. Wong'
+
+slect bdate,address  
+
+from employee  
+
+where fname='Franklin'and minit=' T. ' and lname='Wong'; 
+
+ 
+
+--4) Retrieve the name and salary of every employee
+
+select fname,minit,lname,salary  
+
+from employee; 
+
+ 
+
+--5) Retrieve all distinct salary values
+
+select distinct salary 
+
+ from employee; 
+
+ 
+
+--6)  Retrieve all employee names whose address is in ‘Bellaire’
+
+select fname,minit,lname  
+
+from employee  
+
+where address ='Bellaire'; 
+
+  
+
+  
+
+--7)   Retrieve all employees who were born during the 1950s
+
+select fname 
+
+from employee 
+
+where bdate between "01-01-50" and "31-12-59"; 
+
+  
+
+--8)    Retrieve all employees in department 5 whose salary is between 50,000 and 60,000(inclusive)
+
+select * 
+
+from employee 
+
+where dno=5 and salary >=50000 and salary <=60000; 
+
+  
+
+-- 9)  Retrieve the names of all employees who do not have
+supervisors
+
+select fname,minit,lname 
+
+from employee 
+
+where superssn is null; 
+
+  
+
+--10)   Retrieve SSN and department name for all employees
+
+select e.ssn, d.dname 
+
+from employee e, department d 
+
+Where e.dno=d.dnumber; 
+
+  
+
+ --11)  Retrieve the name and address of all employees who work for
+the 'Research' department
+
+
+select e.fname,e.address 
+
+from employee e, department d 
+
+where e.dno=d.dnumber 
+
+And d.dname="Research"; 
+
+  
+
+-- 12)  For every project located in 'Stafford', list the project number, the controlling department number, and the department manager's last name, address, and birthdate.
+
+
+select p.pnumber,p.dnum,e.lname,e.address,e.bdate 
+
+from project p, department d, employee e 
+
+where p.plocation="Stafford"; 
+
+  
+
+ --13)   For each employee, retrieve the employee's name, and the name of his or her immediate supervisor.
+
+select e.fname,e.lname,s.fname,s.lname 
+
+from employee as e, employee as s 
+
+where e.superssn=s.ssn; 
+
+  
+
+     --14)  Retrieve all combinations of Employee Name and Department
+Name
+
+select e.fname,e.lname,d.dname 
+
+from employee e, department d; 
+
+  
+
+     --15)  Make a list of all project numbers for projects that involve an
+employee whose last name is 'Narayan’ either as a worker or as
+a manager of the department that controls the project.
+
+
+(select distinct pnumber 
+
+from project,department,employee 
+
+where dnum=dnumber and mgrssn=ssn and lname="Narayan") 
+
+union 
+
+(select distinct pnumber 
+
+from project,works_on,employee 
+
+where pnumber=pno and essn=ssn and lname="Narayan"); 
+
+  
+
+    -- 16)   Increase the salary of all employees working on the 'ProductX'
+project by 15%. Retrieve employee name and increased salary
+of these employees.
+
+select fname,lname,1.15*salary as increased_sal 
+
+from employee,works_on,project 
+
+where ssn=essn and pno=pnumber and pname="productX"; 
+
+  
+
+    -- 17)  Retrieve a list of employees and the project name each works in,
+ordered by the employee's department, and within each
+department ordered alphabetically by employee first name.
+
+select dname,fname,lname,pname 
+
+from department,employee,works_on,project 
+
+where dnumber=dno and ssn=essn and pno=pnumber 
+
+order by dname,fname,lname; 
+
+  
+
+     --18) Select the names of employees whose salary does not match with
+salary of any employee in department 10.
+
+select fname,lname 
+
+from employee 
+
+where salary not in  (select distinct salary from employee where dno=5); 
+
+  
+
+     --19) Retrieve the name of each employee who has a dependent with the
+same first name and same sex as the employee.  
+
+select e.fname,e.lname 
+
+from employee as e 
+
+where e.ssn in (select essn from dependent where e.fname=dependent_name and e.sex=sex); 
+
+  
+
+     --20)   Retrieve the employee numbers of all employees who work on
+project located in Bellaire, Houston, or Stafford.
+
+select e.ssn 
+
+from employee e ,project p ,works_on w 
+
+Where  e.ssn=w.essn and w.pno=p.pnumber and p.plocation in('Bellaire', 'Houston',' Stafford'); 
+
+ 
+
+     --21)    Find the sum of the salaries of all employees, the maximum
+salary, the minimum salary, and the average salary. Display with
+proper headings
+
+select sum(salary),max(salary),min(salary),avg(salary) 
+
+from employee; 
+
+  
+
+     --22)   Find the sum of the salaries and number of employees of all
+employees of the ‘Marketing’ department, as well as the
+maximum salary, the minimum salary, and the average salary in
+this department.
+
+
+select sum(salary),count(*),max(salary),min(salary),avg(salary) 
+
+from employee, department 
+
+where dname = "marketing"; 
+
+  
+
+     --23)    Select the names of employees whose salary is greater than the
+average salary of all employees in department 10.
+
+select fname,lname 
+
+from employee 
+
+where salary>(select avg(salary) from employee where dno=10); 
+
+  
+
+     --24)  For each department, retrieve the department number, the
+number of employees in the department, and their average salary.
+
+select dno,count(*),avg(salary) 
+
+from employee 
+
+group by dno; 
+
+  
+
+    -- 25)  For each project, retrieve the project number, the project name,
+and the number of employees who work on that project.
+
+select pnumber,pname,count(*) 
+
+from project 
+
+group by pnumber; 
+
+  
+
+     --26)  Change the location and controlling department number for all
+projects having more than 5 employees to ‘Bellaire’ and 6
+respectively.
+
+update project 
+
+set plocation="Bellaire", dnum=6 
+
+where (select count(essn) 
+
+      from works_on 
+
+      where pno=pnumber)>5; 
+
+  
+
+     --  27)   For each department having more than 10 employees, retrieve
+the department no, no of employees drawing more than 40,000 as
+salary.
+
+select dno,count(*) 
+
+  from employee 
+
+  where salary>40000 
+
+  group by dno 
+
+having count(*)>10; 
+
+  
+
+   --  28) . Insert a record in Project table which violates referential
+integrity constraint with respect to Department number. Now
+remove the violation by making necessary insertion in the
+Department table.
+
+insert into project 
+
+    values("Research and development",25,"Bhopal",9); 
+
+   
+
+  
+
+   --  29)  Delete all dependents of employee whose ssn is ‘123456789’.
+
+delete from dependent 
+
+where essn=123456789; 
+
+  
+
+  --   30)  Delete an employee from Employee table with ssn = ‘12345’(
+make sure that this employee has some dependents, is working on
+some project, is a manager of some department and is supervising
+some employees). Check and display the cascading effect on
+Dependent and Works on table. In Department table MGRSSN
+should be set to default value and in Employee table SUPERSSN
+should be set to NULL
+
+-- Set MGRSSN to default value in Department table 
+
+UPDATE Department 
+
+SET MGRSSN = DEFAULT 
+
+WHERE MGRSSN = '12345'; 
+
+  
+
+-- Set SUPERSSN to NULL in Employee table 
+
+UPDATE Employee 
+
+SET SUPERSSN = NULL 
+
+WHERE SUPERSSN = '12345'; 
+
+  
+
+-- Delete rows in Dependent table that refer to the deleted employee 
+
+DELETE FROM Dependent 
+
+WHERE ESSN = '12345'; 
+
+  
+
+-- Delete rows in Works_on table that refer to the deleted employee 
+
+DELETE FROM Works_on 
+
+WHERE Essn = '12345'; 
+
+     --31) Perform a query using alter command to drop/add field and a
+constraint in Employee table.
+
+    alter table employee
+
+drop foreign key(superssn);
